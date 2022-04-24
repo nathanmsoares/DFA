@@ -34,7 +34,6 @@ public class Dfa {
         setInicialStatus();
         setFinalStatus();
         setMatrixToItsStatus();
-        execute();
     }
 
     private void getNext(String nextState){
