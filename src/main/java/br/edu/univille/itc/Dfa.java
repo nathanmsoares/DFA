@@ -9,12 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
-Falta Adicionar a matriz nos status, por isos da erro
- */
 public class Dfa {
 
     private Logger logger = Logger.getLogger(this.getClass().getName());
