@@ -115,14 +115,14 @@ public class Dfa {
             }
             this.atualStatus = this.inicialStatus;
         }
+        logger.info(String.format("Approved -> %s", approved));
+        logger.info(String.format("Rejected -> %s", rejected));
         saveResults();
     }
 
     private void saveResults(){
         results.put("Approved", approved);
-        logger.info(String.format("Approved -> %s", approved));
         results.put("Rejected", rejected);
-        logger.info(String.format("Rejected -> %s", rejected));
         logger.info("Saving results into results.json");
         ObjectMapper objectMapper = new ObjectMapper();
         try {
