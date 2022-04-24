@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,7 +25,11 @@ public class Dfa {
     private JsonNode dfaData;
     private JsonNode sequences;
 
-    private Map<JsonNode, String> results = new HashMap<>();
+    private List<JsonNode> approved = new ArrayList<>();
+
+    private List<JsonNode> rejected = new ArrayList<>();
+
+    private Map<String, List<JsonNode>> results = new HashMap<>();
 
     public Dfa() {
         logger.info("initializing DFA");
@@ -103,17 +109,20 @@ public class Dfa {
         for (JsonNode sequence: sequences.get("sequences")) {
             sequence.forEach(transaction -> this.getNext(transaction.asText()));
             if (this.atualStatus.isAccept()){
-                results.put(sequence, "Approved");
+                approved.add(sequence);
             } else {
-                results.put(sequence, "Failed");
+                rejected.add(sequence);
             }
             this.atualStatus = this.inicialStatus;
         }
-        logger.info(String.format("Results -> %s", results));
         saveResults();
     }
 
-    public void saveResults(){
+    private void saveResults(){
+        results.put("Approved", approved);
+        logger.info(String.format("Approved -> %s", approved));
+        results.put("Rejected", rejected);
+        logger.info(String.format("Rejected -> %s", rejected));
         logger.info("Saving results into results.json");
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -123,7 +132,7 @@ public class Dfa {
         }
     }
 
-    public Map<String, State> getStatus() {
+    private Map<String, State> getStatus() {
         return status;
     }
 }
